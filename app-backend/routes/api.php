@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PatientController;
+use App\Http\Controllers\API\DepartmentController;
+use App\Http\Controllers\API\TreatmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,11 @@ Route::prefix('v1')->group(function () {
         Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
     });
 
-    Route::prefix('patients')->middleware('auth:sanctum')->group(function () {
-        Route::resource('/', PatientController::class);
+    Route::resource('patients', PatientController::class)->middleware('auth:sanctum');
+
+    Route::get('departments', [DepartmentController::class, 'index'])->middleware('auth:sanctum');
+
+    Route::prefix('treatment')->middleware('auth:sanctum')->group(function () {
+        Route::post('checkin', [TreatmentController::class, 'store']);
     });
 });
