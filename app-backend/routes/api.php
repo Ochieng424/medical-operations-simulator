@@ -5,6 +5,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PatientController;
 use App\Http\Controllers\API\DepartmentController;
 use App\Http\Controllers\API\TreatmentController;
+use App\Http\Controllers\API\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,10 @@ Route::prefix('v1')->group(function () {
     Route::prefix('treatment')->middleware('auth:sanctum')->group(function () {
         Route::post('checkin', [TreatmentController::class, 'store']);
     });
+
+    Route::prefix('reports')->middleware('auth:sanctum')->middleware('auth:sanctum')->group(function () {
+        Route::get('departments', [ReportController::class, 'departments']);
+        Route::post('', [ReportController::class, 'filter']);
+    });
+
 });

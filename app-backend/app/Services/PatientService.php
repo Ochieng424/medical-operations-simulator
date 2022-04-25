@@ -3,22 +3,31 @@
 namespace App\Services;
 
 use App\Models\Patient;
+use Illuminate\Http\Request;
 
 class PatientService
 {
-    public function getPatients()
+    public function getPatients(Request $request)
     {
         $user = auth()->user();
+        $query = (new Patient())->newQuery();
 
-        if ($user->role == 'Receptionist') {
-            return Patient::latest('id')->paginate(10);
-        } else {
-            return Patient::whereHas('currentDepartment', function ($query) use ($user) {
+        $search = $request->search;
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
+        }
+
+        if ($user->role != 'Receptionist') {
+            $query->whereHas('currentDepartment', function ($query) use ($user) {
                 $query->where('department_ref_id', $user->department_id);
             })->whereHas('currentCheckIn', function ($query) use ($user) {
                 $query->where('status', 'open');
-            })->latest('id')->paginate(10);
+            });
         }
+
+        return $query->latest()->paginate(10);
     }
 
     public function store($request)

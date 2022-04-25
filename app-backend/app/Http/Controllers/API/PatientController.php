@@ -23,9 +23,9 @@ class PatientController extends Controller
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $patients = $this->patientService->getPatients();
+        $patients = $this->patientService->getPatients($request);
 
         return response()->json($patients);
     }
