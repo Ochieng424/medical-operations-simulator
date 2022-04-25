@@ -32,7 +32,7 @@ const auth = createAuth({
     },
     options: {
         rolesKey: 'role',
-        notFoundRedirect: {name: 'user-account'},
+        notFoundRedirect: {name: 'user-account'}
     }
 });
 
