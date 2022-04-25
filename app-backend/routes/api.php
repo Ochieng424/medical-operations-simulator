@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +21,9 @@ Route::prefix('v1')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('refresh', [AuthController::class, 'refresh'])->middleware('auth:sanctum');
         Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
+    });
+
+    Route::prefix('patients')->middleware('auth:sanctum')->group(function () {
+        Route::resource('/', PatientController::class);
     });
 });

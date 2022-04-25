@@ -39,9 +39,8 @@ class AuthService
         return $user->tokens()->delete();
     }
 
-    public function refresh(Request $request): JsonResponse
+    public function refresh($user)
     {
-        $user = $request->user();
         $user->tokens()->delete();
         return $user->createToken('web')->plainTextToken;
     }

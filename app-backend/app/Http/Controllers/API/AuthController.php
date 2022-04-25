@@ -36,10 +36,8 @@ class AuthController extends Controller
         return response()->json(['token' => $token])->header('Authorization', $token);
     }
 
-    public function user(Request $request): JsonResponse
+    public function user(Request $request)
     {
-        $user = $request->user();
-
-        return response()->json($user);
+         return $request->user();
     }
 }
