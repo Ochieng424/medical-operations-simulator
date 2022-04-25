@@ -27,9 +27,8 @@
        </div>
      </div>
      <div class="col-sm-7 card p-3">
-       <patient-treatment :patient="patient" :title="'Check in Patient - Receptionist'"></patient-treatment>
-       <hr>
-       <patient-treatment :patient="patient" :title="'Findings and notes'"></patient-treatment>
+       <patient-treatment v-if="user.role === 'Receptionist'" :user="user" :patient="patient" :title="'Check in Patient'"></patient-treatment>
+       <patient-treatment v-else :patient="patient" :user="user" :title="'Findings and notes'"></patient-treatment>
      </div>
    </div>
    <div class="mt-3" v-if="fetched">
@@ -60,7 +59,8 @@ export default {
           text: this.$route.params.id
         }
       ],
-      fetched: false
+      fetched: false,
+      user: {}
     }
   },
   methods: {
@@ -73,10 +73,16 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    fetchUser() {
+      this.axios.get('/auth/user').then(response => {
+        this.user = response.data;
+      });
     }
   },
   mounted() {
     this.getPatient()
+    this.fetchUser()
   }
 }
 </script>

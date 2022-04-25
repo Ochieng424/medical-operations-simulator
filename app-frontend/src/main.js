@@ -31,7 +31,7 @@ const auth = createAuth({
         router: driverRouterVueRouter,
     },
     options: {
-        rolesKey: 'role',
+        rolesKey: 'roles',
         notFoundRedirect: {name: 'user-account'}
     }
 });

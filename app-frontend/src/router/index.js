@@ -27,6 +27,14 @@ const router = createRouter({
             meta: {
                 auth: true
             }
+        },
+        {
+            path: '/reports',
+            name: 'reports',
+            component: () => import('../views/dashboard/Reports.vue'),
+            meta: {
+                auth: true
+            }
         }
     ]
 })

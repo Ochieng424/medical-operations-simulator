@@ -20,7 +20,7 @@
         </b-form-group>
         <b-form-group label="Options" v-slot="{ ariaDescribedby }">
           <b-form-radio v-model="form.type" :aria-describedby="ariaDescribedby" name="some-radios" value="A">Refer to department</b-form-radio>
-          <b-form-radio v-model="form.type" :aria-describedby="ariaDescribedby" name="some-radios" value="B">Close off treatment</b-form-radio>
+          <b-form-radio v-if="isShow" v-model="form.type" :aria-describedby="ariaDescribedby" name="some-radios" value="B">Close off treatment</b-form-radio>
         </b-form-group>
         <b-form-group
             id="input-group-1"
@@ -52,6 +52,10 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    user: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -65,10 +69,18 @@ export default {
       departments: [],
       errors: [],
       loading: false,
-      modalShow: false
+      modalShow: false,
+      isShow: false,
     }
   },
   methods: {
+    check() {
+      let array = [
+          'Receptionist',
+          'Nurse',
+      ]
+      this.isShow = !array.includes(this.user.role);
+    },
     getDepartments() {
       this.axios.get('/departments')
         .then(response => {
@@ -94,6 +106,7 @@ export default {
   },
   mounted() {
     this.getDepartments();
+    this.check();
   }
 }
 </script>

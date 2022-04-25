@@ -9,6 +9,7 @@
             <th scope="col">Department</th>
             <th scope="col">Medical Practitioner</th>
             <th scope="col">Notes</th>
+            <th scope="col">Date</th>
           </tr>
           </thead>
           <tbody>
@@ -16,6 +17,9 @@
             <th scope="row">{{treatment.department.name}}</th>
             <td>{{treatment.medical_practitioner.name}}</td>
             <td>{{treatment.notes}}</td>
+            <td>
+              {{ moment(treatment.created_at).format("ddd MMM DD, YYYY [at] HH:mm a") }}
+            </td>
           </tr>
           </tbody>
         </table>
@@ -25,12 +29,18 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: "TreatmentRecord",
   props: {
     record: {
       type: Object,
       required: true
+    }
+  },
+  data(){
+    return {
+      moment: moment
     }
   }
 }
