@@ -35,7 +35,7 @@ class TreatmentController extends Controller
      */
     public function store(CheckInRequest $request): JsonResponse
     {
-        $response = $this->checkInService->checkIn($request->patient_id, $request->department_id, $request->notes);
+        $response = $this->checkInService->checkIn($request->patient_id, $request->department_id, $request->notes, $request->type);
 
         return response()->json($response);
     }

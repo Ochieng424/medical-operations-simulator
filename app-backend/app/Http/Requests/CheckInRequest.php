@@ -25,7 +25,6 @@ class CheckInRequest extends FormRequest
     {
         return [
             'patient_id' => 'required',
-            'department_id' => 'required',
             'notes' => 'required',
         ];
     }

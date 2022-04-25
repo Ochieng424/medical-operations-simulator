@@ -10,10 +10,10 @@ class DepartmentService
     {
         $departmentsReferrals = [
             'Nurse' => [4],
-            'Lab Technician' => [3, 4, 5],
-            'Radiologist' => [2, 4, 5],
+            'Lab Technician' => [4],
+            'Radiologist' => [4],
             'Doctor' => [2, 3, 5],
-            'Optician' => [2, 3, 4],
+            'Optician' => [4],
             'Receptionist' => [1],
         ];
 

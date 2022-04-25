@@ -8,7 +8,17 @@ class PatientService
 {
     public function getPatients()
     {
-        return Patient::latest('id')->paginate(10);
+        $user = auth()->user();
+
+        if ($user->role == 'Receptionist') {
+            return Patient::latest('id')->paginate(10);
+        } else {
+            return Patient::whereHas('currentDepartment', function ($query) use ($user) {
+                $query->where('department_ref_id', $user->department_id);
+            })->whereHas('currentCheckIn', function ($query) use ($user) {
+                $query->where('status', 'open');
+            })->latest('id')->paginate(10);
+        }
     }
 
     public function store($request)

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CheckIn extends Model
 {
     use HasFactory;
+
+    public function treatments()
+    {
+        return $this->hasMany(Treatment::class);
+    }
 }

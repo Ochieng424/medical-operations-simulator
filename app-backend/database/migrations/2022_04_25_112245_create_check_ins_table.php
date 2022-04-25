@@ -20,9 +20,12 @@ class CreateCheckInsTable extends Migration
             $table->string('status')->default('open');
             $table->string('check_in_number')->unique();
             $table->unsignedBigInteger('checked_in_by_id')->nullable();
+            $table->unsignedBigInteger('closed_by_id')->nullable();
             $table->timestamps();
 
             $table->foreign('checked_in_by_id')->references('id')->on('users')
+                ->onDelete('set null');
+            $table->foreign('closed_by_id')->references('id')->on('users')
                 ->onDelete('set null');
         });
     }

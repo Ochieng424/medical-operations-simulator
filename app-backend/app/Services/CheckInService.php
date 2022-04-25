@@ -8,20 +8,37 @@ use Illuminate\Support\Facades\DB;
 
 class CheckInService
 {
-    public function checkIn($patient_id, $department_id, $notes)
+    public function checkIn($patient_id, $department_id, $notes, $type)
     {
-        if ($this->hasOpenCheckIn($patient_id)) {
-            return false;
-        }
-
         try {
-            DB::transaction(function () use ($patient_id, $department_id, $notes) {
-                $checkIn = new CheckIn();
-                $checkIn->patient_id = $patient_id;
-                $checkIn->check_in_number = $this->generateCheckInNumber();
-                $checkIn->checked_in_by_id = auth()->user()->id;
-                $checkIn->save();
+            $user = auth()->user();
 
+            if ($user->role == 'Receptionist') {
+
+                if ($this->hasOpenCheckIn($patient_id)) {
+                    return false;
+                }
+                DB::transaction(function () use ($patient_id, $department_id, $notes) {
+                    $checkIn = new CheckIn();
+                    $checkIn->patient_id = $patient_id;
+                    $checkIn->check_in_number = $this->generateCheckInNumber();
+                    $checkIn->checked_in_by_id = auth()->user()->id;
+                    $checkIn->save();
+
+                    $this->createTreatment($checkIn->id, $patient_id, $department_id, $notes);
+                });
+                return 'success';
+            }
+
+            $checkIn = $this->getCurrentCheckin($patient_id);
+            DB::transaction(function () use ($checkIn, $patient_id, $department_id, $notes, $type, $user) {
+                if ($type === 'B'){
+                    $checkIn->status = 'closed';
+                    $checkIn->closed_by_id = $user->id;
+                    $checkIn->save();
+
+                    $department_id = null;
+                }
                 $this->createTreatment($checkIn->id, $patient_id, $department_id, $notes);
             });
             return 'success';
@@ -63,6 +80,13 @@ class CheckInService
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    private function getCurrentCheckin($patient_id)
+    {
+        return CheckIn::where('patient_id', $patient_id)
+            ->where('status', 'open')
+            ->first();
     }
 
 }
