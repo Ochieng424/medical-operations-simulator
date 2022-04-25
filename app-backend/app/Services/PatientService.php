@@ -38,4 +38,9 @@ class PatientService
             return $e->getMessage();
         }
     }
+
+    public function getPatient($id)
+    {
+        return Patient::where('patient_number', $id)->with('currentCheckIn.treatments')->first();
+    }
 }

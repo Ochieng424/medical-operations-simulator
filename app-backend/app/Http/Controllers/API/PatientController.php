@@ -51,7 +51,7 @@ class PatientController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $patient = Patient::where('patient_number', $id)->first();
+        $patient = $this->patientService->getPatient($id);
 
         return response()->json($patient);
     }
