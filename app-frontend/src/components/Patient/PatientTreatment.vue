@@ -18,10 +18,15 @@
         ></b-form-textarea>
         <field-error v-if="errors.notes" :error="errors.notes[0]"></field-error>
         </b-form-group>
+        <b-form-group label="Options" v-slot="{ ariaDescribedby }">
+          <b-form-radio v-model="form.type" :aria-describedby="ariaDescribedby" name="some-radios" value="A">Refer to department</b-form-radio>
+          <b-form-radio v-model="form.type" :aria-describedby="ariaDescribedby" name="some-radios" value="B">Close off treatment</b-form-radio>
+        </b-form-group>
         <b-form-group
             id="input-group-1"
             label="Refer to department:"
             label-for="input-1"
+            v-if="form.type === 'A'"
         >
           <b-form-select required value-field="id" text-field="name" v-model="form.department_id" :options="departments"></b-form-select>
           <field-error v-if="errors.residence" :error="errors.residence[0]"></field-error>
@@ -54,7 +59,8 @@ export default {
       form: {
         patient_id: '',
         department_id: '',
-        notes: ''
+        notes: '',
+        type: 'A',
       },
       departments: [],
       errors: [],

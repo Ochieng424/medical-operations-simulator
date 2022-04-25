@@ -25,18 +25,25 @@
          <p class="mb-0">Residence</p>
          <strong>{{patient.residence}}</strong>
        </div>
-       <hr>
-       <patient-treatment :patient="patient" :title="'Check in Patient'"></patient-treatment>
      </div>
+     <div class="col-sm-7 card p-3">
+       <patient-treatment :patient="patient" :title="'Check in Patient - Receptionist'"></patient-treatment>
+       <hr>
+       <patient-treatment :patient="patient" :title="'Findings and notes'"></patient-treatment>
+     </div>
+   </div>
+   <div class="mt-3" v-if="fetched">
+     <treatment-record :record="patient.current_check_in"></treatment-record>
    </div>
  </div>
 </template>
 
 <script>
 import PatientTreatment from "../../components/Patient/PatientTreatment.vue";
+import TreatmentRecord from "../../components/Patient/TreatmentRecord.vue";
 export default {
   name: "PatientView",
-  components: {PatientTreatment},
+  components: {TreatmentRecord, PatientTreatment},
   data() {
     return {
       patient: {},
@@ -52,7 +59,8 @@ export default {
         {
           text: this.$route.params.id
         }
-      ]
+      ],
+      fetched: false
     }
   },
   methods: {
@@ -60,6 +68,7 @@ export default {
       this.axios.get('/patients/' + this.$route.params.id)
         .then(response => {
           this.patient = response.data
+          this.fetched = true
         })
         .catch(error => {
           console.log(error)
