@@ -14,15 +14,21 @@
         <th scope="col">Email</th>
         <th scope="col">Phone</th>
         <th scope="col">Residence</th>
+        <th scope="col">More</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="patient in patients.data" :key="patient.id">
-        <th scope="row">{{patient.id}}</th>
+        <th scope="row">{{patient.patient_number}}</th>
         <td>{{patient.name}}</td>
         <td>{{patient.email}}</td>
         <td>{{patient.phone}}</td>
         <td>{{patient.residence}}</td>
+        <td>
+          <router-link :to="{name: 'patient', params: {id: patient.patient_number}}" class="btn btn-primary btn-sm">
+            More
+          </router-link>
+        </td>
       </tr>
       </tbody>
     </table>

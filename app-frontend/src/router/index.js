@@ -19,6 +19,14 @@ const router = createRouter({
             meta: {
                 auth: true
             }
+        },
+        {
+            path: '/patients/:id',
+            name: 'patient',
+            component: () => import('../views/dashboard/PatientView.vue'),
+            meta: {
+                auth: true
+            }
         }
     ]
 })
